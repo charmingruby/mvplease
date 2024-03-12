@@ -3,6 +3,7 @@ package config
 import (
 	env "github.com/caarlos0/env/v6"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 )
 
@@ -82,4 +83,8 @@ type CloudflareConfig struct {
 	BucketName      string
 	AccessKeyID     string
 	SecretAccessKey string
+}
+
+func (c *Config) SetDatabase(db *sqlx.DB) {
+	c.Database.Conn = db
 }
