@@ -1,9 +1,9 @@
-package examples
+package example
 
 import (
 	"time"
 
-	"github.com/charmingruby/mvplease/internal/core"
+	entity "github.com/charmingruby/mvplease/internal/core/entitiy"
 	"github.com/google/uuid"
 )
 
@@ -13,7 +13,7 @@ func NewAggregate(
 	ownerID uuid.UUID,
 ) *Aggregate {
 	a := Aggregate{
-		ID:               core.NewID(),
+		ID:               entity.NewID(),
 		Name:             name,
 		Description:      description,
 		MembersQuantity:  0,

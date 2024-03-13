@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"github.com/charmingruby/mvplease/internal/core/contracts"
+	"github.com/charmingruby/mvplease/internal/core/contract"
 	"github.com/google/uuid"
 )
 
@@ -14,10 +14,10 @@ type ServiceContract interface {
 
 type Service struct {
 	accounts            AccountRepository
-	cryptographyService contracts.CryptographyContract
+	cryptographyService contract.CryptographyContract
 }
 
-func NewService(accounts AccountRepository, cryptographyService contracts.CryptographyContract) *Service {
+func NewService(accounts AccountRepository, cryptographyService contract.CryptographyContract) *Service {
 	svc := &Service{
 		accounts:            accounts,
 		cryptographyService: cryptographyService,

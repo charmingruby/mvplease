@@ -3,7 +3,7 @@ package domain
 import (
 	"time"
 
-	"github.com/charmingruby/mvplease/internal/core"
+	entity "github.com/charmingruby/mvplease/internal/core/entitiy"
 	"github.com/google/uuid"
 )
 
@@ -18,7 +18,7 @@ func NewAccount(
 	password string,
 ) (*Account, error) {
 	a := Account{
-		ID:                 core.NewID(),
+		ID:                 entity.NewID(),
 		Name:               name,
 		Email:              email,
 		Role:               accountRoles()[defaultRole],
