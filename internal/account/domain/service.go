@@ -1,13 +1,11 @@
 package domain
 
-import "github.com/google/uuid"
+import (
+	"github.com/charmingruby/mvplease/internal/core/contracts"
+	"github.com/google/uuid"
+)
 
-type CryptographyInterface interface {
-	GenerateHash(value string) (string, error)
-	VerifyHash(hash, value string) bool
-}
-
-type ServiceInterface interface {
+type ServiceContract interface {
 	Account(id uuid.UUID) (Account, error)
 	Accounts() ([]Account, error)
 	CreateAccount(a *Account) error
@@ -16,10 +14,10 @@ type ServiceInterface interface {
 
 type Service struct {
 	accounts            AccountRepository
-	cryptographyService CryptographyInterface
+	cryptographyService contracts.CryptographyContract
 }
 
-func NewService(accounts AccountRepository, cryptographyService CryptographyInterface) *Service {
+func NewService(accounts AccountRepository, cryptographyService contracts.CryptographyContract) *Service {
 	svc := &Service{
 		accounts:            accounts,
 		cryptographyService: cryptographyService,
