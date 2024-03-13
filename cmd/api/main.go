@@ -39,14 +39,22 @@ func main() {
 	cfg.SetDatabase(db)
 
 	// Repositories
+	logger.Info("Initializing repositories...")
+
 	accountRepository, err := postgres.NewAccountRepository(cfg.Database.Conn)
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
 
+	logger.Info("Repositories initialized.")
+
 	// Services
+	logger.Info("Initializing services...")
+
 	domain.NewService(&accountRepository)
+
+	logger.Info("Services initialized.")
 
 	// Server
 	router := mux.NewRouter()
