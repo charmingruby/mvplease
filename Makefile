@@ -32,7 +32,7 @@ new-mig:
 #############
 .PHONY: run
 run:
-	go run ./cmd/server/main.go
+	go run ./cmd/api/main.go
 
 #############
 # TESTS     #
@@ -46,4 +46,4 @@ test:
 #############
 .PHONY: build
 build:
-	go build -o api cmd/server/main.go
+	go build -o api cmd/api/main.go

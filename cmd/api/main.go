@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/charmingruby/mvplease/internal/accounts/database/postgres"
+	"github.com/charmingruby/mvplease/internal/accounts/domain"
 	"github.com/charmingruby/mvplease/internal/config"
 	"github.com/charmingruby/mvplease/internal/shared/http"
 	"github.com/charmingruby/mvplease/pkg/logger"
-	"github.com/charmingruby/mvplease/pkg/postgres"
+	database "github.com/charmingruby/mvplease/pkg/postgres"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
@@ -29,7 +31,7 @@ func main() {
 	}
 
 	// Database
-	db, err := postgres.New(cfg)
+	db, err := database.New(cfg)
 	if err != nil {
 		logger.Error(fmt.Sprintf("Database error: %s", err.Error()))
 		os.Exit(1)
@@ -37,8 +39,14 @@ func main() {
 	cfg.SetDatabase(db)
 
 	// Repositories
+	accountRepository, err := postgres.NewAccountRepository(cfg.Database.Conn)
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
 
 	// Services
+	domain.NewService(&accountRepository)
 
 	// Server
 	router := mux.NewRouter()

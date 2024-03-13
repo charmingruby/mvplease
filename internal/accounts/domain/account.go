@@ -15,7 +15,7 @@ type Account struct {
 	AvatarURL          string     `db:"avatar_url" json:"avatar_url"`
 	Password           string     `db:"password" json:"password"`
 	AggregatesQuantity uint       `db:"aggregates_quantity" json:"aggregates_quantity"`
-	ExamplesQuantity   uint       `db:"example_quantity" json:"example_quantity"`
+	ExamplesQuantity   uint       `db:"examples_quantity" json:"examples_quantity"`
 	DeletedBy          string     `db:"deleted_by" json:"deleted_by"`
 	CreatedAt          time.Time  `db:"created_at" json:"created_at"`
 	UpdatedAt          *time.Time `db:"updated_at" json:"updated_at"`
