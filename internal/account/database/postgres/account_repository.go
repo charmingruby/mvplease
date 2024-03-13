@@ -13,11 +13,8 @@ func NewAccountRepository(db *sqlx.DB) (AccountRepository, error) {
 	for queryName, statement := range queriesAccount() {
 		stmt, err := db.Preparex(statement)
 		if err != nil {
-			return AccountRepository{}, errors.WrapErrorf(
-				err,
-				errors.ErrCodeUnknown,
-				errors.StatementPreparationError(queryName),
-			)
+			return AccountRepository{},
+				errors.NewStatementError(err, errors.StatementPreparationErrorMessage(queryName))
 		}
 
 		stmts[queryName] = stmt
@@ -36,11 +33,8 @@ func (r *AccountRepository) statement(queryName string) (*sqlx.Stmt, error) {
 	stmt, ok := r.statements[queryName]
 
 	if !ok {
-		return nil, errors.WrapErrorf(
-			nil,
-			errors.ErrCodeUnknown,
-			errors.StatementNotPreparedError(queryName),
-		)
+		return nil, errors.NewStatementError(nil, errors.StatementNotPreparedErrorMessage(queryName))
+
 	}
 
 	return stmt, nil
@@ -54,11 +48,8 @@ func (r *AccountRepository) FindAccountByID(id uuid.UUID) (domain.Account, error
 
 	var account domain.Account
 	if err := stmt.Get(&account, id); err != nil {
-		return domain.Account{}, errors.WrapErrorf(
-			err,
-			errors.ErrCodeNotFound,
-			errors.NotFoundError("Account"),
-		)
+		return domain.Account{},
+			errors.NewNotFoundError(err, "Account")
 	}
 
 	return account, nil
@@ -72,11 +63,8 @@ func (r *AccountRepository) FindAccountByEmail(email string) (domain.Account, er
 
 	var account domain.Account
 	if err := stmt.Get(&account, email); err != nil {
-		return domain.Account{}, errors.WrapErrorf(
-			err,
-			errors.ErrCodeNotFound,
-			errors.NotFoundError("Account"),
-		)
+		return domain.Account{},
+			errors.NewNotFoundError(err, "Account")
 	}
 
 	return account, nil
