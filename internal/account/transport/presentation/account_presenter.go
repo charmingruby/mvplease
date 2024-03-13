@@ -3,7 +3,7 @@ package presentation
 import (
 	"time"
 
-	"github.com/charmingruby/mvplease/internal/accounts/domain"
+	"github.com/charmingruby/mvplease/internal/account/domain"
 	"github.com/google/uuid"
 )
 

@@ -16,16 +16,16 @@ type Error struct {
 	code     ErrorCode
 }
 
-func WrapErrorf(original error, code ErrorCode, format string, a ...interface{}) error {
+func WrapErrorf(original error, code ErrorCode, msg string) error {
 	return &Error{
 		original: original,
 		code:     code,
-		msg:      fmt.Sprintf(format, a...),
+		msg:      msg,
 	}
 }
 
-func NewErrorf(code ErrorCode, format string, a ...interface{}) error {
-	return WrapErrorf(nil, code, format, a...)
+func NewErrorf(code ErrorCode, msg string) error {
+	return WrapErrorf(nil, code, msg)
 }
 
 func (e *Error) Error() string {

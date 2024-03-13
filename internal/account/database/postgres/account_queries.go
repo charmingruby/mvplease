@@ -1,17 +1,20 @@
 package postgres
 
 const (
-	getAccountByID = "get account by id"
-	fetchAccounts  = "fetch accounts"
-	createAccount  = "create account"
-	saveAccount    = "save account"
-	deleteAccount  = "delete account"
+	getAccountByID    = "get account by id"
+	getAccountByEmail = "get account by email"
+	fetchAccounts     = "fetch accounts"
+	createAccount     = "create account"
+	saveAccount       = "save account"
+	deleteAccount     = "delete account"
 )
 
 func queriesAccount() map[string]string {
 	return map[string]string{
 		getAccountByID: `SELECT * FROM accounts 
 			WHERE id = $1`,
+		getAccountByEmail: `SELECT * FROM accounts 
+			WHERE email = $1`,
 		fetchAccounts: `SELECT * FROM accounts 
 			LIMIT $1 
 			OFFSET $2`,

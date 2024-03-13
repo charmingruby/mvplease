@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	"github.com/charmingruby/mvplease/internal/accounts/domain"
+	"github.com/charmingruby/mvplease/internal/account/domain"
 	"github.com/charmingruby/mvplease/pkg/errors"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
@@ -39,23 +39,50 @@ func (r *AccountRepository) statement(queryName string) (*sqlx.Stmt, error) {
 		return nil, errors.WrapErrorf(
 			nil,
 			errors.ErrCodeUnknown,
-			errors.StatementNotPrepared(queryName),
+			errors.StatementNotPreparedError(queryName),
 		)
 	}
 
 	return stmt, nil
 }
 
-func (r *AccountRepository) Account(id uuid.UUID) (domain.Account, error) {
-	_, err := r.statement(getAccountByID)
+func (r *AccountRepository) FindAccountByID(id uuid.UUID) (domain.Account, error) {
+	stmt, err := r.statement(getAccountByID)
 	if err != nil {
 		return domain.Account{}, err
 	}
 
-	return domain.Account{}, nil
+	var account domain.Account
+	if err := stmt.Get(&account, id); err != nil {
+		return domain.Account{}, errors.WrapErrorf(
+			err,
+			errors.ErrCodeNotFound,
+			errors.NotFoundError("Account"),
+		)
+	}
+
+	return account, nil
 }
 
-func (r *AccountRepository) Accounts() ([]domain.Account, error) {
+func (r *AccountRepository) FindAccountByEmail(email string) (domain.Account, error) {
+	stmt, err := r.statement(getAccountByEmail)
+	if err != nil {
+		return domain.Account{}, err
+	}
+
+	var account domain.Account
+	if err := stmt.Get(&account, email); err != nil {
+		return domain.Account{}, errors.WrapErrorf(
+			err,
+			errors.ErrCodeNotFound,
+			errors.NotFoundError("Account"),
+		)
+	}
+
+	return account, nil
+}
+
+func (r *AccountRepository) FetchAccounts(page uint) ([]domain.Account, error) {
 	_, err := r.statement(fetchAccounts)
 	if err != nil {
 		return []domain.Account{}, err

@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/charmingruby/mvplease/internal/accounts/database/postgres"
-	"github.com/charmingruby/mvplease/internal/accounts/domain"
-	"github.com/charmingruby/mvplease/internal/config"
+	"github.com/charmingruby/mvplease/config"
+	"github.com/charmingruby/mvplease/internal/account"
 	"github.com/charmingruby/mvplease/internal/shared/http"
 	"github.com/charmingruby/mvplease/pkg/logger"
 	database "github.com/charmingruby/mvplease/pkg/postgres"
@@ -38,21 +37,14 @@ func main() {
 	}
 	cfg.SetDatabase(db)
 
-	// Repositories
-	logger.Info("Initializing repositories...")
-
-	accountRepository, err := postgres.NewAccountRepository(cfg.Database.Conn)
-	if err != nil {
-		logger.Error(err.Error())
-		os.Exit(1)
-	}
-
-	logger.Info("Repositories initialized.")
-
 	// Services
 	logger.Info("Initializing services...")
 
-	domain.NewService(&accountRepository)
+	_, err = account.NewService(cfg.Database.Conn, cfg.Logger)
+	if err != nil {
+		logger.Error(fmt.Sprintf("Service initialization error: %s", err.Error()))
+		os.Exit(1)
+	}
 
 	logger.Info("Services initialized.")
 

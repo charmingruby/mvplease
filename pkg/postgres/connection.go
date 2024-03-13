@@ -3,7 +3,7 @@ package postgres
 import (
 	"fmt"
 
-	"github.com/charmingruby/mvplease/internal/config"
+	"github.com/charmingruby/mvplease/config"
 	"github.com/jmoiron/sqlx"
 )
 
