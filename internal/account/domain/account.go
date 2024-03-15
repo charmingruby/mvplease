@@ -16,7 +16,7 @@ func NewAccount(
 	name,
 	email,
 	password string,
-) (*Account, error) {
+) *Account {
 	a := Account{
 		ID:                 entity.NewID(),
 		Name:               name,
@@ -32,7 +32,7 @@ func NewAccount(
 		DeletedAt:          nil,
 	}
 
-	return &a, nil
+	return &a
 }
 
 type Account struct {

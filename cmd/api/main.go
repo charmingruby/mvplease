@@ -6,7 +6,7 @@ import (
 
 	"github.com/charmingruby/mvplease/config"
 	"github.com/charmingruby/mvplease/internal/account"
-	"github.com/charmingruby/mvplease/internal/shared/http"
+	"github.com/charmingruby/mvplease/internal/shared/rest"
 	"github.com/charmingruby/mvplease/pkg/logger"
 	database "github.com/charmingruby/mvplease/pkg/postgres"
 	"github.com/gorilla/mux"
@@ -40,7 +40,7 @@ func main() {
 	// Services
 	logger.Info("Initializing services...")
 
-	_, err = account.NewService(cfg.Database.Conn, cfg.Logger)
+	accountService, err := account.NewService(cfg.Database.Conn, cfg.Logger)
 	if err != nil {
 		logger.Error(fmt.Sprintf("Service initialization error: %s", err.Error()))
 		os.Exit(1)
@@ -49,12 +49,19 @@ func main() {
 	logger.Info("Services initialized.")
 
 	// Server
+	logger.Info("Setting up server...")
 	router := mux.NewRouter()
-	server, err := http.NewServer(cfg, router)
+	server, err := rest.NewServer(cfg, router)
 	if err != nil {
 		logger.Error(fmt.Sprintf("Server error: %s", err.Error()))
 		os.Exit(1)
 	}
+
+	if err := account.NewHTTPService(router, accountService, cfg.Logger); err != nil {
+		logger.Error(fmt.Sprintf("Account HTTP error: %s", err.Error()))
+		os.Exit(1)
+	}
+	logger.Info("Server setted.")
 
 	if err := server.Start(); err != nil {
 		logger.Errorf("Server error: %s", err.Error())

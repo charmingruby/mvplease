@@ -5,9 +5,10 @@ import (
 	"github.com/charmingruby/mvplease/pkg/errors"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
-func NewAccountRepository(db *sqlx.DB) (AccountRepository, error) {
+func NewAccountRepository(db *sqlx.DB, logger *logrus.Logger) (AccountRepository, error) {
 	stmts := make(map[string]*sqlx.Stmt)
 
 	for queryName, statement := range queriesAccount() {
@@ -22,11 +23,13 @@ func NewAccountRepository(db *sqlx.DB) (AccountRepository, error) {
 
 	return AccountRepository{
 		statements: stmts,
+		logger:     logger,
 	}, nil
 }
 
 type AccountRepository struct {
 	statements map[string]*sqlx.Stmt
+	logger     *logrus.Logger
 }
 
 func (r *AccountRepository) statement(queryName string) (*sqlx.Stmt, error) {
@@ -34,7 +37,6 @@ func (r *AccountRepository) statement(queryName string) (*sqlx.Stmt, error) {
 
 	if !ok {
 		return nil, errors.NewStatementError(nil, errors.StatementNotPreparedErrorMessage(queryName))
-
 	}
 
 	return stmt, nil
@@ -43,11 +45,13 @@ func (r *AccountRepository) statement(queryName string) (*sqlx.Stmt, error) {
 func (r *AccountRepository) FindAccountByID(id uuid.UUID) (domain.Account, error) {
 	stmt, err := r.statement(getAccountByID)
 	if err != nil {
+		r.logger.Error(err)
 		return domain.Account{}, err
 	}
 
 	var account domain.Account
 	if err := stmt.Get(&account, id); err != nil {
+		r.logger.Error(err)
 		return domain.Account{},
 			errors.NewNotFoundError(err, "Account")
 	}
@@ -58,11 +62,13 @@ func (r *AccountRepository) FindAccountByID(id uuid.UUID) (domain.Account, error
 func (r *AccountRepository) FindAccountByEmail(email string) (domain.Account, error) {
 	stmt, err := r.statement(getAccountByEmail)
 	if err != nil {
+		r.logger.Error(err)
 		return domain.Account{}, err
 	}
 
 	var account domain.Account
 	if err := stmt.Get(&account, email); err != nil {
+		r.logger.Error(err)
 		return domain.Account{},
 			errors.NewNotFoundError(err, "Account")
 	}
@@ -79,8 +85,19 @@ func (r *AccountRepository) FetchAccounts(page uint) ([]domain.Account, error) {
 	return []domain.Account{}, nil
 }
 func (r *AccountRepository) CreateAccount(a *domain.Account) error {
-	_, err := r.statement(createAccount)
+	stmt, err := r.statement(createAccount)
 	if err != nil {
+		return err
+	}
+
+	if _, err := stmt.Exec(
+		a.Name,
+		a.Email,
+		a.Role,
+		a.Password,
+		a.AggregatesQuantity,
+		a.ExamplesQuantity,
+	); err != nil {
 		return err
 	}
 

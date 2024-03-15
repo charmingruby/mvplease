@@ -12,8 +12,8 @@ func NewNotFoundError(err error, entity string) *NotFoundError {
 	}
 }
 
-func NewConflictError(err error, entity string, field string) *NotFoundError {
-	return &NotFoundError{
+func NewConflictError(err error, entity string, field string) *ConflictError {
+	return &ConflictError{
 		original: err,
 		message:  conflictErrorMessage(entity, field),
 	}

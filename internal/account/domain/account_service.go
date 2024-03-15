@@ -1,6 +1,9 @@
 package domain
 
-import "github.com/google/uuid"
+import (
+	"github.com/charmingruby/mvplease/pkg/errors"
+	"github.com/google/uuid"
+)
 
 func (s *Service) Account(id uuid.UUID) (Account, error) {
 	account, err := s.accounts.FindAccountByID(id)
@@ -21,8 +24,9 @@ func (s *Service) Accounts(page uint) ([]Account, error) {
 }
 
 func (s *Service) CreateAccount(a *Account) error {
-	if _, err := s.accounts.FindAccountByEmail(a.Email); err != nil {
-		return err
+	if _, err := s.accounts.FindAccountByEmail(a.Email); err == nil {
+		conflictErr := errors.NewConflictError(err, "Account", "email")
+		return conflictErr
 	}
 
 	hashedPassword, err := s.cryptographyService.GenerateHash(a.Password)
@@ -47,7 +51,8 @@ func (s *Service) Login(email, password string) error {
 
 	validCredentials := s.cryptographyService.VerifyHash(acc.Password, password)
 	if !validCredentials {
-		return err
+		invalidCredentialsErr := errors.NewInvalidCredentialsError()
+		return invalidCredentialsErr
 	}
 
 	return nil

@@ -7,9 +7,9 @@ import (
 
 type ServiceContract interface {
 	Account(id uuid.UUID) (Account, error)
-	Accounts() ([]Account, error)
+	Accounts(page uint) ([]Account, error)
 	CreateAccount(a *Account) error
-	Login(email, password string) (*Account, error)
+	Login(email, password string) error
 }
 
 type Service struct {
