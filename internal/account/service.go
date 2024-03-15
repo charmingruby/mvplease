@@ -1,10 +1,12 @@
 package account
 
 import (
+	"github.com/charmingruby/mvplease/config"
 	"github.com/charmingruby/mvplease/internal/account/database/postgres"
 	"github.com/charmingruby/mvplease/internal/account/domain"
 	http "github.com/charmingruby/mvplease/internal/account/transport/rest"
-	"github.com/charmingruby/mvplease/internal/shared/cryptography"
+	"github.com/charmingruby/mvplease/internal/services/cryptography"
+	"github.com/charmingruby/mvplease/internal/services/token"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
@@ -23,7 +25,11 @@ func NewService(db *sqlx.DB, logger *logrus.Logger) (*domain.Service, error) {
 	return svc, nil
 }
 
-func NewHTTPService(router *mux.Router, service domain.ServiceContract, logger *logrus.Logger) error {
-	http.NewHTTPHandler(router, service, logger)
+func NewHTTPService(router *mux.Router, service domain.ServiceContract, cfg *config.Config) error {
+	issuer := "mvplease"
+	jwtService := token.NewJWTService(cfg.JWTSecretKey, issuer)
+
+	http.NewHTTPHandler(router, jwtService, service, cfg.Logger)
+
 	return nil
 }

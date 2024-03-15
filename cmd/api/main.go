@@ -57,7 +57,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := account.NewHTTPService(router, accountService, cfg.Logger); err != nil {
+	if err := account.NewHTTPService(router, accountService, cfg); err != nil {
 		logger.Error(fmt.Sprintf("Account HTTP error: %s", err.Error()))
 		os.Exit(1)
 	}

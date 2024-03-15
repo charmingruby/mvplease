@@ -43,17 +43,18 @@ func (s *Service) CreateAccount(a *Account) error {
 	return nil
 }
 
-func (s *Service) Login(email, password string) error {
+func (s *Service) Login(email, password string) (*Account, error) {
 	acc, err := s.accounts.FindAccountByEmail(email)
 	if err != nil {
-		return err
+		invalidCredentialsErr := errors.NewInvalidCredentialsError()
+		return nil, invalidCredentialsErr
 	}
 
 	validCredentials := s.cryptographyService.VerifyHash(acc.Password, password)
 	if !validCredentials {
 		invalidCredentialsErr := errors.NewInvalidCredentialsError()
-		return invalidCredentialsErr
+		return nil, invalidCredentialsErr
 	}
 
-	return nil
+	return &acc, nil
 }

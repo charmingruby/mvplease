@@ -2,13 +2,13 @@ package cryptography
 
 import "golang.org/x/crypto/bcrypt"
 
-type Hash struct{}
-
-func NewCryptographyService() *Hash {
-	return &Hash{}
+func NewCryptographyService() *CryptographyService {
+	return &CryptographyService{}
 }
 
-func (h *Hash) GenerateHash(value string) (string, error) {
+type CryptographyService struct{}
+
+func (h *CryptographyService) GenerateHash(value string) (string, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(value), 6)
 	if err != nil {
 		return "", err
@@ -17,7 +17,7 @@ func (h *Hash) GenerateHash(value string) (string, error) {
 	return string(hash), nil
 }
 
-func (h *Hash) VerifyHash(hash, value string) bool {
+func (h *CryptographyService) VerifyHash(hash, value string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(value))
 
 	return err == nil

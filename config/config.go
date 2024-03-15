@@ -35,7 +35,8 @@ func New(logger *logrus.Logger) (*Config, error) {
 			AccessKeyID:     environment.AWSAccessKeyID,
 			SecretAccessKey: environment.AWSSecretAccessKey,
 		},
-		Logger: logger,
+		Logger:       logger,
+		JWTSecretKey: environment.JWTSecretKey,
 	}
 	logger.Info("Configuration done.")
 
@@ -50,7 +51,7 @@ type environment struct {
 	DatabaseSSL         string `env:"DATABASE_SSL,required"`
 	ServerPort          string `env:"SERVER_PORT,required"`
 	ServerHost          string `env:"SERVER_HOST,required"`
-	JwtSecretKey        string `env:"JWT_SECRET_KEY,required"`
+	JWTSecretKey        string `env:"JWT_SECRET_KEY,required"`
 	CloudflareAccountID string `env:"CLOUDFLARE_ACCOUNT_ID,required"`
 	AWSBucketName       string `env:"AWS_BUCKET_NAME,required"`
 	AWSAccessKeyID      string `env:"AWS_ACCESS_KEY_ID,required"`
@@ -58,10 +59,11 @@ type environment struct {
 }
 
 type Config struct {
-	Database   *DatabaseConfig
-	Server     *ServerConfig
-	Cloudflare *CloudflareConfig
-	Logger     *logrus.Logger
+	Database     *DatabaseConfig
+	Server       *ServerConfig
+	Cloudflare   *CloudflareConfig
+	Logger       *logrus.Logger
+	JWTSecretKey string
 }
 
 type DatabaseConfig struct {

@@ -5,7 +5,7 @@ package errors
 /////////////////////
 func NewInvalidCredentialsError() *InvalidCredentialsError {
 	return &InvalidCredentialsError{
-		message: "Invalid credentials.",
+		message: "Invalid credentials",
 	}
 }
 

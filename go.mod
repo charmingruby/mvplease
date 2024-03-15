@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/caarlos0/env/v6 v6.10.1
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/validator/v10 v10.19.0
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
