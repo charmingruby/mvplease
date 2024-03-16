@@ -45,6 +45,8 @@ func makeAuthenticateEndpoint(s domain.ServiceContract, jwt *token.JWTService, l
 			return
 		}
 
+		logger.Infof("Account: '%s' authenticated successfully", acc.ID)
+
 		body := &authenticateResponse{
 			Token: tokenStr,
 		}

@@ -6,7 +6,7 @@ import (
 	"github.com/charmingruby/mvplease/internal/account/domain"
 	http "github.com/charmingruby/mvplease/internal/account/transport/rest"
 	"github.com/charmingruby/mvplease/internal/services/cryptography"
-	"github.com/charmingruby/mvplease/internal/services/token"
+	"github.com/charmingruby/mvplease/internal/shared/rest/middlewares"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
@@ -25,11 +25,9 @@ func NewService(db *sqlx.DB, logger *logrus.Logger) (*domain.Service, error) {
 	return svc, nil
 }
 
-func NewHTTPService(router *mux.Router, service domain.ServiceContract, cfg *config.Config) error {
-	issuer := "mvplease"
-	jwtService := token.NewJWTService(cfg.JWTSecretKey, issuer)
+func NewHTTPService(router *mux.Router, middlewares *middlewares.Middleware, service domain.ServiceContract, cfg *config.Config) error {
 
-	http.NewHTTPHandler(router, jwtService, service, cfg.Logger)
+	http.NewHTTPHandler(router, middlewares, service, cfg.Logger)
 
 	return nil
 }

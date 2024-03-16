@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -20,7 +21,11 @@ func NewResponse[T any](
 	res := Response{
 		Message:    message,
 		StatusCode: statusCode,
-		Data:       data,
+		Data:       nil,
+	}
+
+	if data != nil {
+		res.Data = data
 	}
 
 	writeResponse(w, &res)
@@ -91,4 +96,16 @@ func IsRequestValid(request any) *ValidationErrors {
 	}
 
 	return nil
+}
+
+func RetrieveTokenFromRequest(r *http.Request) string {
+	fullToken := r.Header.Get("Authorization")
+
+	splittedToken := strings.Split(fullToken, " ")
+
+	if len(splittedToken) != 2 {
+		return ""
+	}
+
+	return splittedToken[1]
 }

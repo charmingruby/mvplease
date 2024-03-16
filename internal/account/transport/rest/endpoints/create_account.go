@@ -48,6 +48,7 @@ func makeCreateAccountEndpoint(s domain.ServiceContract, logger *logrus.Logger) 
 			return
 		}
 
+		logger.Infof("Account: '%s' registered successfully", newAccount.ID)
 		rest.NewResponse[any](
 			w,
 			"Account registered successfully.",

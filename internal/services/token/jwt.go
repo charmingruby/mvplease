@@ -2,6 +2,7 @@ package token
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -13,7 +14,10 @@ type JWTService struct {
 	secretKey string
 }
 
-func NewJWTService(secretKey, issuer string) *JWTService {
+func NewJWTService() *JWTService {
+	secretKey := os.Getenv("JWT_SECRET_KEY")
+	issuer := "mvplease"
+
 	return &JWTService{
 		issuer:    issuer,
 		secretKey: secretKey,
@@ -62,8 +66,8 @@ func (j *JWTService) ValidateToken(token string) bool {
 }
 
 type payload struct {
-	AccountID string `json:"account_id"`
-	Role      string `json:"role"`
+	AccountID uuid.UUID `json:"account_id"`
+	Role      string    `json:"role"`
 }
 
 func (j *JWTService) RetriveTokenPayload(token string) (*payload, error) {
@@ -78,10 +82,11 @@ func (j *JWTService) RetriveTokenPayload(token string) (*payload, error) {
 		return nil, fmt.Errorf("unable to parse jwt claims")
 	}
 
-	fmt.Printf("%v\n", claims)
+	accountIDStr := claims["sub"].(string)
+	accountUUID := uuid.MustParse(accountIDStr)
 
 	payload := &payload{
-		AccountID: claims["sub"].(string),
+		AccountID: accountUUID,
 		Role:      claims["role"].(string),
 	}
 

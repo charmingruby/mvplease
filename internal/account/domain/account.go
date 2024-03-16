@@ -44,10 +44,10 @@ type Account struct {
 	Password           string     `db:"password" json:"password"`
 	AggregatesQuantity uint       `db:"aggregates_quantity" json:"aggregates_quantity"`
 	ExamplesQuantity   uint       `db:"examples_quantity" json:"examples_quantity"`
-	DeletedBy          *uuid.UUID `db:"deleted_by" json:"deleted_by"`
+	DeletedBy          *uuid.UUID `db:"deleted_by" json:"deleted_by,omitempty"`
 	CreatedAt          time.Time  `db:"created_at" json:"created_at"`
-	UpdatedAt          *time.Time `db:"updated_at" json:"updated_at"`
-	DeletedAt          *time.Time `db:"deleted_at" json:"deleted_at"`
+	UpdatedAt          *time.Time `db:"updated_at" json:"updated_at,omitempty"`
+	DeletedAt          *time.Time `db:"deleted_at" json:"deleted_at,omitempty"`
 }
 
 func (a *Account) SetPassword(password string) {

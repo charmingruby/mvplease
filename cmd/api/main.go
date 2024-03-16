@@ -7,6 +7,7 @@ import (
 	"github.com/charmingruby/mvplease/config"
 	"github.com/charmingruby/mvplease/internal/account"
 	"github.com/charmingruby/mvplease/internal/shared/rest"
+	"github.com/charmingruby/mvplease/internal/shared/rest/middlewares"
 	"github.com/charmingruby/mvplease/pkg/logger"
 	database "github.com/charmingruby/mvplease/pkg/postgres"
 	"github.com/gorilla/mux"
@@ -57,7 +58,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := account.NewHTTPService(router, accountService, cfg); err != nil {
+	middlewares := middlewares.NewMiddleware(cfg.Logger)
+
+	if err := account.NewHTTPService(router, middlewares, accountService, cfg); err != nil {
 		logger.Error(fmt.Sprintf("Account HTTP error: %s", err.Error()))
 		os.Exit(1)
 	}
