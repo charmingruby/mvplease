@@ -1,6 +1,7 @@
 package token
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -44,4 +45,45 @@ func (j *JWTService) GenerateToken(accountID uuid.UUID, role string) (string, er
 	}
 
 	return tokenStr, nil
+}
+
+func (j *JWTService) isTokenValid(t *jwt.Token) (interface{}, error) {
+	if _, isValid := t.Method.(*jwt.SigningMethodHMAC); !isValid {
+		return nil, fmt.Errorf("invalid token %v", t)
+	}
+
+	return []byte(j.secretKey), nil
+}
+
+func (j *JWTService) ValidateToken(token string) bool {
+	_, err := jwt.Parse(token, j.isTokenValid)
+
+	return err == nil
+}
+
+type payload struct {
+	AccountID string `json:"account_id"`
+	Role      string `json:"role"`
+}
+
+func (j *JWTService) RetriveTokenPayload(token string) (*payload, error) {
+	t, err := jwt.Parse(token, j.isTokenValid)
+	if err != nil {
+		return nil, err
+	}
+
+	claims, ok := t.Claims.(jwt.MapClaims)
+
+	if !ok {
+		return nil, fmt.Errorf("unable to parse jwt claims")
+	}
+
+	fmt.Printf("%v\n", claims)
+
+	payload := &payload{
+		AccountID: claims["sub"].(string),
+		Role:      claims["role"].(string),
+	}
+
+	return payload, err
 }
