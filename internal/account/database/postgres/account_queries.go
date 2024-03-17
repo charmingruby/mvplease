@@ -23,7 +23,7 @@ func queriesAccount() map[string]string {
 			VALUES ($1, $2, $3, $4, $5, $6)
 			RETURNING *`,
 		saveAccount: `UPDATE accounts
-			SET name = $1, email = $2, role = $3, avatar_url = $4, password = $5, aggregates_quantity = $6, examples_quantity = $7, deleted_by = $8, updated_at = $9, deleted_at = $10 
+			SET name = $1, email = $2, role = $3, avatar_url = $4, password = $5, examples_quantity = $6, deleted_by = $7, updated_at = $8, deleted_at = $9 
 			WHERE id = $11 AND deleted_at IS NULL
 			RETURNING *`,
 		deleteAccount: `UPDATE accounts

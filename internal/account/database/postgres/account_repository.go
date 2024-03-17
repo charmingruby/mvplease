@@ -95,7 +95,6 @@ func (r *AccountRepository) CreateAccount(a *domain.Account) error {
 		a.Email,
 		a.Role,
 		a.Password,
-		a.AggregatesQuantity,
 		a.ExamplesQuantity,
 	); err != nil {
 		return err
