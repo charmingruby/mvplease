@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=mvplease
     volumes:
-      - upl_pg_data:/bitnami/postgresql
+      - mvplease_pg_data:/bitnami/postgresql
 
 volumes:
-  upl_pg_data:
+  mvplease_pg_data:
