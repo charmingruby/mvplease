@@ -48,15 +48,3 @@ CREATE TABLE IF NOT EXISTS example_members
     updated_at timestamp,
     deleted_at timestamp
 );
-
-CREATE TABLE IF NOT EXISTS notifications 
-(
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
-
-    subject varchar NOT NULL,
-    message varchar NOT NULL,
-
-    recipient_id uuid REFERENCES accounts (id),
-  
-    sent_at timestamp DEFAULT now() NOT NULL
-)
