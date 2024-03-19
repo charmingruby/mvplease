@@ -29,3 +29,9 @@ GET {{baseUrl}}/me
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
+###
+
+# @name delete_account
+DELETE {{baseUrl}}/accounts/254ec062-e911-4c31-80a2-83d845f9ead9
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

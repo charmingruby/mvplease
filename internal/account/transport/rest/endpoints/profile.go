@@ -50,6 +50,6 @@ func makeProfileEndpoint(s domain.ServiceContract, logger *logrus.Logger, jwt *t
 		}
 
 		logger.Infof("'%s' profile found", payload.AccountID)
-		rest.NewResponse[profileResponse](w, "Profile found", &body, http.StatusOK)
+		rest.NewResponse[profileResponse](w, "Profile found.", &body, http.StatusOK)
 	}
 }

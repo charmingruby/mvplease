@@ -19,16 +19,16 @@ func queriesAccount() map[string]string {
 			LIMIT $1 
 			OFFSET $2`,
 		createAccount: `INSERT INTO accounts 
-			(name, email, role, password, aggregates_quantity, examples_quantity)
-			VALUES ($1, $2, $3, $4, $5, $6)
+			(name, email, role, password, examples_quantity)
+			VALUES ($1, $2, $3, $4, $5)
 			RETURNING *`,
 		saveAccount: `UPDATE accounts
 			SET name = $1, email = $2, role = $3, avatar_url = $4, password = $5, examples_quantity = $6, deleted_by = $7, updated_at = $8, deleted_at = $9 
-			WHERE id = $11 AND deleted_at IS NULL
+			WHERE id = $10 AND deleted_at IS NULL
 			RETURNING *`,
 		deleteAccount: `UPDATE accounts
-			SET deleted_by = $1, deleted_at = $2 
-			WHERE id = $3 AND deleted_at IS NULL
+			SET deleted_by = $1, deleted_at = $2, updated_at = $3
+			WHERE id = $4 AND deleted_at IS NULL
 			RETURNING *`,
 	}
 }

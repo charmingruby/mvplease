@@ -58,3 +58,18 @@ func (s *Service) Login(email, password string) (*Account, error) {
 
 	return &acc, nil
 }
+
+func (s *Service) DeleteAccount(accountID, managerID uuid.UUID) error {
+	a, err := s.accounts.FindAccountByID(accountID)
+	if err != nil {
+		return err
+	}
+
+	a.DeleteAccount(managerID)
+
+	if err := s.accounts.DeleteAccount(&a); err != nil {
+		return err
+	}
+
+	return nil
+}

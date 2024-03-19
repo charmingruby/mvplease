@@ -58,3 +58,15 @@ func accountRoles() map[string]string {
 		adminRole:   "manager",
 	}
 }
+func (a *Account) DeleteAccount(managerID uuid.UUID) {
+	now := time.Now()
+
+	a.DeletedAt = &now
+	a.DeletedBy = &managerID
+	a.Touch()
+}
+
+func (a *Account) Touch() {
+	now := time.Now()
+	a.UpdatedAt = &now
+}

@@ -65,12 +65,12 @@ func (j *JWTService) ValidateToken(token string) bool {
 	return err == nil
 }
 
-type payload struct {
+type Payload struct {
 	AccountID uuid.UUID `json:"account_id"`
 	Role      string    `json:"role"`
 }
 
-func (j *JWTService) RetriveTokenPayload(token string) (*payload, error) {
+func (j *JWTService) RetriveTokenPayload(token string) (*Payload, error) {
 	t, err := jwt.Parse(token, j.isTokenValid)
 	if err != nil {
 		return nil, err
@@ -85,7 +85,7 @@ func (j *JWTService) RetriveTokenPayload(token string) (*payload, error) {
 	accountIDStr := claims["sub"].(string)
 	accountUUID := uuid.MustParse(accountIDStr)
 
-	payload := &payload{
+	payload := &Payload{
 		AccountID: accountUUID,
 		Role:      claims["role"].(string),
 	}

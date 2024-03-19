@@ -84,6 +84,7 @@ func (r *AccountRepository) FetchAccounts(page uint) ([]domain.Account, error) {
 
 	return []domain.Account{}, nil
 }
+
 func (r *AccountRepository) CreateAccount(a *domain.Account) error {
 	stmt, err := r.statement(createAccount)
 	if err != nil {
@@ -104,17 +105,25 @@ func (r *AccountRepository) CreateAccount(a *domain.Account) error {
 }
 
 func (r *AccountRepository) SaveAccount(a *domain.Account) error {
-	_, err := r.statement(saveAccount)
+	stmt, err := r.statement(saveAccount)
 	if err != nil {
+		return err
+	}
+
+	if _, err := stmt.Exec(a.Name, a.Email, a.Role, a.AvatarURL, a.Password, a.ExamplesQuantity, a.DeletedBy, a.UpdatedAt, a.DeletedAt, a.ID); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (r *AccountRepository) DeleteAccount(id uuid.UUID) error {
-	_, err := r.statement(deleteAccount)
+func (r *AccountRepository) DeleteAccount(a *domain.Account) error {
+	stmt, err := r.statement(deleteAccount)
 	if err != nil {
+		return err
+	}
+
+	if _, err := stmt.Exec(a.DeletedBy, a.UpdatedAt, a.DeletedAt, a.ID); err != nil {
 		return err
 	}
 

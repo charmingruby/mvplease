@@ -34,14 +34,21 @@ func NewHTTPHandler(r *mux.Router, mw *middlewares.Middleware, service domain.Se
 	profileHandler := endpoints.NewProfileHandler(h.s, h.logger, jwtService)
 	r.Handle("/me", h.mw.ProtectdRoute(profileHandler)).Methods(http.MethodGet)
 
+	// Route Groups
 	sessionsRouter := h.NewSessionsRouter(jwtService)
 	r.PathPrefix("/sessions").Handler(sessionsRouter)
+
+	accountsRouter := h.NewAccountsRouter()
+	r.PathPrefix("/accounts").Handler(accountsRouter)
 
 	logger.Info("Registered account routes.")
 }
 
-func (h *Handler) NewAccountRouter() *mux.Router {
+func (h *Handler) NewAccountsRouter() *mux.Router {
 	r := mux.NewRouter().PathPrefix("/accounts").Subrouter().StrictSlash(true)
+
+	deleteAccountHandler := endpoints.NewDeleteAccountHandler(h.s, h.logger)
+	r.Handle("/{id}", h.mw.ProtectedRouteByRole("manager", deleteAccountHandler)).Methods(http.MethodDelete)
 
 	return r
 }
