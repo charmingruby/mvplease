@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS accounts
     avatar_url varchar,
     password varchar NOT NULL,
 
-    examples_quantity integer NOT NULL,
+    groups_quantity integer NOT NULL,
 
     deleted_by uuid REFERENCES accounts (id),
 
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS accounts
     deleted_at timestamp
 );
 
-CREATE TABLE IF NOT EXISTS examples 
+CREATE TABLE IF NOT EXISTS groups 
 (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
     
@@ -36,11 +36,11 @@ CREATE TABLE IF NOT EXISTS examples
     deleted_at timestamp
 );
 
-CREATE TABLE IF NOT EXISTS example_members 
+CREATE TABLE IF NOT EXISTS group_members 
 (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 
-    example_id uuid REFERENCES examples (id),
+    group_id uuid REFERENCES groups (id),
     account_id uuid REFERENCES accounts (id),
 
     deleted_by uuid REFERENCES accounts (id),

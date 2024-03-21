@@ -3,7 +3,7 @@ package middlewares
 import (
 	"net/http"
 
-	"github.com/charmingruby/mvplease/internal/shared/rest"
+	"github.com/charmingruby/mvplease/internal/common/infra/rest"
 )
 
 func NewUnauthorizedError(w http.ResponseWriter) {

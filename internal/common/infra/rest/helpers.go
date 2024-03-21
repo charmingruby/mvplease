@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/charmingruby/mvplease/internal/services/token"
+	"github.com/charmingruby/mvplease/internal/common/infra/token"
 	"github.com/go-playground/validator/v10"
 )
 

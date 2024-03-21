@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"github.com/charmingruby/mvplease/internal/services/token"
+	"github.com/charmingruby/mvplease/internal/common/infra/token"
 	"github.com/sirupsen/logrus"
 )
 

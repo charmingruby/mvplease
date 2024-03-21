@@ -96,7 +96,7 @@ func (r *AccountRepository) CreateAccount(a *domain.Account) error {
 		a.Email,
 		a.Role,
 		a.Password,
-		a.ExamplesQuantity,
+		a.GroupsQuantity,
 	); err != nil {
 		return err
 	}
@@ -110,7 +110,7 @@ func (r *AccountRepository) SaveAccount(a *domain.Account) error {
 		return err
 	}
 
-	if _, err := stmt.Exec(a.Name, a.Email, a.Role, a.AvatarURL, a.Password, a.ExamplesQuantity, a.DeletedBy, a.UpdatedAt, a.DeletedAt, a.ID); err != nil {
+	if _, err := stmt.Exec(a.Name, a.Email, a.Role, a.AvatarURL, a.Password, a.GroupsQuantity, a.DeletedBy, a.UpdatedAt, a.DeletedAt, a.ID); err != nil {
 		return err
 	}
 

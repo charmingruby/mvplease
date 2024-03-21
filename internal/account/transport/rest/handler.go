@@ -5,8 +5,8 @@ import (
 
 	"github.com/charmingruby/mvplease/internal/account/domain"
 	"github.com/charmingruby/mvplease/internal/account/transport/rest/endpoints"
-	"github.com/charmingruby/mvplease/internal/services/token"
-	"github.com/charmingruby/mvplease/internal/shared/rest/middlewares"
+	"github.com/charmingruby/mvplease/internal/common/infra/rest/middlewares"
+	"github.com/charmingruby/mvplease/internal/common/infra/token"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )

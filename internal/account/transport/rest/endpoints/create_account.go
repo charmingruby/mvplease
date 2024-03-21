@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/charmingruby/mvplease/internal/account/domain"
-	"github.com/charmingruby/mvplease/internal/shared/rest"
+	"github.com/charmingruby/mvplease/internal/common/infra/rest"
 	"github.com/charmingruby/mvplease/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

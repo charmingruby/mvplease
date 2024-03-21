@@ -6,8 +6,8 @@ import (
 
 	"github.com/charmingruby/mvplease/config"
 	"github.com/charmingruby/mvplease/internal/account"
-	"github.com/charmingruby/mvplease/internal/shared/rest"
-	"github.com/charmingruby/mvplease/internal/shared/rest/middlewares"
+	"github.com/charmingruby/mvplease/internal/common/infra/rest"
+	"github.com/charmingruby/mvplease/internal/common/infra/rest/middlewares"
 	"github.com/charmingruby/mvplease/pkg/logger"
 	database "github.com/charmingruby/mvplease/pkg/postgres"
 	"github.com/gorilla/mux"

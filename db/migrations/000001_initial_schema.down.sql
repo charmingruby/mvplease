@@ -1,3 +1,3 @@
-DROP TABLE IF EXISTS example_members;
-DROP TABLE IF EXISTS examples;
+DROP TABLE IF EXISTS group_members;
+DROP TABLE IF EXISTS groups;
 DROP TABLE IF EXISTS accounts;

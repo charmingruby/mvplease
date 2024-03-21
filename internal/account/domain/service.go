@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"github.com/charmingruby/mvplease/internal/core/contract"
+	"github.com/charmingruby/mvplease/internal/common/core/contract"
 	"github.com/google/uuid"
 )
 

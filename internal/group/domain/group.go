@@ -3,15 +3,15 @@ package domain
 import (
 	"time"
 
-	"github.com/charmingruby/mvplease/internal/core"
+	"github.com/charmingruby/mvplease/internal/common/core"
 	"github.com/google/uuid"
 )
 
-func NewExample(
+func NewGroup(
 	name, description string,
 	ownerID uuid.UUID,
-) *Example {
-	return &Example{
+) *Group {
+	return &Group{
 		ID:              core.NewID(),
 		Name:            name,
 		Description:     description,
@@ -24,7 +24,7 @@ func NewExample(
 	}
 }
 
-type Example struct {
+type Group struct {
 	ID              uuid.UUID  `db:"id" json:"id"`
 	Name            string     `db:"name" json:"name"`
 	Description     string     `db:"description" json:"description"`
