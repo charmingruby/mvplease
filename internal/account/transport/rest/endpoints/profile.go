@@ -5,12 +5,12 @@ import (
 
 	"github.com/charmingruby/mvplease/internal/account/domain"
 	"github.com/charmingruby/mvplease/internal/common/infra/rest"
-	"github.com/charmingruby/mvplease/internal/common/infra/token"
+	"github.com/charmingruby/mvplease/internal/common/infra/security"
 	"github.com/charmingruby/mvplease/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
-func NewProfileHandler(s domain.ServiceContract, logger *logrus.Logger, jwt *token.JWTService) http.HandlerFunc {
+func NewProfileHandler(s domain.ServiceContract, logger *logrus.Logger, jwt *security.JWTService) http.HandlerFunc {
 	return makeProfileEndpoint(s, logger, jwt)
 }
 
@@ -18,7 +18,7 @@ type profileResponse struct {
 	Account domain.Account `json:"account"`
 }
 
-func makeProfileEndpoint(s domain.ServiceContract, logger *logrus.Logger, jwt *token.JWTService) http.HandlerFunc {
+func makeProfileEndpoint(s domain.ServiceContract, logger *logrus.Logger, jwt *security.JWTService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		token := rest.RetrieveTokenFromRequest(r)
 

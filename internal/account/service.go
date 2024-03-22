@@ -5,8 +5,8 @@ import (
 	"github.com/charmingruby/mvplease/internal/account/database/postgres"
 	"github.com/charmingruby/mvplease/internal/account/domain"
 	http "github.com/charmingruby/mvplease/internal/account/transport/rest"
-	"github.com/charmingruby/mvplease/internal/common/infra/cryptography"
 	"github.com/charmingruby/mvplease/internal/common/infra/rest/middlewares"
+	"github.com/charmingruby/mvplease/internal/common/infra/security"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
@@ -18,7 +18,7 @@ func NewService(db *sqlx.DB, logger *logrus.Logger) (*domain.Service, error) {
 		return nil, err
 	}
 
-	cryptographySvc := cryptography.NewCryptographyService()
+	cryptographySvc := security.NewCryptographyService()
 
 	svc := domain.NewService(&account, cryptographySvc)
 

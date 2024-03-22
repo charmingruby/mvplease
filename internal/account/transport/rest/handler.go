@@ -6,7 +6,7 @@ import (
 	"github.com/charmingruby/mvplease/internal/account/domain"
 	"github.com/charmingruby/mvplease/internal/account/transport/rest/endpoints"
 	"github.com/charmingruby/mvplease/internal/common/infra/rest/middlewares"
-	"github.com/charmingruby/mvplease/internal/common/infra/token"
+	"github.com/charmingruby/mvplease/internal/common/infra/security"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -26,7 +26,7 @@ func NewHTTPHandler(r *mux.Router, mw *middlewares.Middleware, service domain.Se
 		logger: logger,
 	}
 
-	jwtService := token.NewJWTService()
+	jwtService := security.NewJWTService()
 
 	createAccountHandler := endpoints.NewCreateAccountHandler(h.s, h.logger)
 	r.Handle("/register", createAccountHandler).Methods(http.MethodPost)
@@ -53,7 +53,7 @@ func (h *Handler) NewAccountsRouter() *mux.Router {
 	return r
 }
 
-func (h *Handler) NewSessionsRouter(jwtService *token.JWTService) *mux.Router {
+func (h *Handler) NewSessionsRouter(jwtService *security.JWTService) *mux.Router {
 	r := mux.NewRouter().PathPrefix("/sessions").Subrouter().StrictSlash(true)
 
 	authenticateHandler := endpoints.NewAuthenticateHandler(h.s, jwtService, h.logger)

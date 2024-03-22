@@ -5,11 +5,11 @@ import (
 
 	"github.com/charmingruby/mvplease/internal/account/domain"
 	"github.com/charmingruby/mvplease/internal/common/infra/rest"
-	"github.com/charmingruby/mvplease/internal/common/infra/token"
+	"github.com/charmingruby/mvplease/internal/common/infra/security"
 	"github.com/sirupsen/logrus"
 )
 
-func NewAuthenticateHandler(s domain.ServiceContract, jwt *token.JWTService, logger *logrus.Logger) http.HandlerFunc {
+func NewAuthenticateHandler(s domain.ServiceContract, jwt *security.JWTService, logger *logrus.Logger) http.HandlerFunc {
 	return makeAuthenticateEndpoint(s, jwt, logger)
 }
 
@@ -22,7 +22,7 @@ type authenticateResponse struct {
 	Token string `json:"token"`
 }
 
-func makeAuthenticateEndpoint(s domain.ServiceContract, jwt *token.JWTService, logger *logrus.Logger) http.HandlerFunc {
+func makeAuthenticateEndpoint(s domain.ServiceContract, jwt *security.JWTService, logger *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		req := authenticateRequest{}
 		if err := rest.ParseRequest[authenticateRequest](&req, r.Body); err != nil {

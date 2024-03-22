@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/charmingruby/mvplease/internal/common/infra/token"
+	"github.com/charmingruby/mvplease/internal/common/infra/security"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -111,7 +111,7 @@ func RetrieveTokenFromRequest(r *http.Request) string {
 	return splittedToken[1]
 }
 
-func RetrievePayloadFromRequest(r *http.Request) (*token.Payload, error) {
+func RetrievePayloadFromRequest(r *http.Request) (*security.Payload, error) {
 	tokenStr := RetrieveTokenFromRequest(r)
-	return token.NewJWTService().RetriveTokenPayload(tokenStr)
+	return security.NewJWTService().RetriveTokenPayload(tokenStr)
 }
