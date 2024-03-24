@@ -10,6 +10,7 @@ type ServiceContract interface {
 	Accounts(page uint) ([]Account, error)
 	CreateAccount(a *Account) error
 	Login(email, password string) (*Account, error)
+	UploadAvatar(accountID uuid.UUID, avatarURL string) error
 	DeleteAccount(accountID, managerID uuid.UUID) error
 }
 

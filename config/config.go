@@ -24,7 +24,6 @@ func New(logger *logrus.Logger) (*Config, error) {
 			Name:     environment.DatabaseName,
 			SSL:      environment.DatabaseSSL,
 		},
-
 		Server: &ServerConfig{
 			Port: environment.ServerPort,
 			Host: environment.ServerHost,

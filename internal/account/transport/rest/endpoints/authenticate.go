@@ -9,8 +9,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func NewAuthenticateHandler(s domain.ServiceContract, jwt *security.JWTService, logger *logrus.Logger) http.HandlerFunc {
-	return makeAuthenticateEndpoint(s, jwt, logger)
+func NewAuthenticateHandler(s domain.ServiceContract, logger *logrus.Logger) http.HandlerFunc {
+	return makeAuthenticateEndpoint(s, logger)
 }
 
 type authenticateRequest struct {
@@ -22,8 +22,10 @@ type authenticateResponse struct {
 	Token string `json:"token"`
 }
 
-func makeAuthenticateEndpoint(s domain.ServiceContract, jwt *security.JWTService, logger *logrus.Logger) http.HandlerFunc {
+func makeAuthenticateEndpoint(s domain.ServiceContract, logger *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		jwt := security.NewJWTService()
+
 		req := authenticateRequest{}
 		if err := rest.ParseRequest[authenticateRequest](&req, r.Body); err != nil {
 			logger.Errorf("Error parsing create account request")

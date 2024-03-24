@@ -29,8 +29,8 @@ func makeDeleteAccountEndpoint(s domain.ServiceContract, logger *logrus.Logger) 
 
 		payload, err := rest.RetrievePayloadFromRequest(r)
 		if err != nil {
-			logger.Errorf("Failed to retrieve payload to delete account: %v", err)
-			rest.NewResponse[any](w, "Payload error: cannot retrieve account payload", nil, http.StatusBadRequest)
+			logger.Error(err.Error())
+			rest.NewResponse[any](w, err.Error(), nil, http.StatusInternalServerError)
 			return
 		}
 

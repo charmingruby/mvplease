@@ -48,6 +48,10 @@ type Account struct {
 	DeletedAt      *time.Time `db:"deleted_at" json:"deleted_at,omitempty"`
 }
 
+func (a *Account) SetAvatarURL(avatarURL string) {
+	a.AvatarURL = &avatarURL
+}
+
 func (a *Account) SetPassword(password string) {
 	a.Password = password
 }

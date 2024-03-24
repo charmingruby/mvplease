@@ -2,16 +2,20 @@ package errors
 
 import "fmt"
 
-/////////////////////
+// ///////////////////
 // Initialization  //
-/////////////////////
+// ///////////////////
 func NewPayloadError(err error, msg string) *PayloadError {
 	return &PayloadError{original: err, message: msg}
 }
 
-/////////////////////
+func NewTokenRetrieveError(err error) *PayloadError {
+	return &PayloadError{original: err, message: TokenRetrievingErrorMessage()}
+}
+
+// ///////////////////
 // Messages        //
-/////////////////////
+// ///////////////////
 func PayloadErrorMessage() string {
 	return "Payload error"
 }
@@ -20,9 +24,9 @@ func TokenRetrievingErrorMessage() string {
 	return "Cannot retrieve payload from token"
 }
 
-/////////////////////
+// ///////////////////
 // Structs         //
-/////////////////////
+// ///////////////////
 type PayloadError struct {
 	original error
 	message  string

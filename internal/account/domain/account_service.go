@@ -73,3 +73,18 @@ func (s *Service) DeleteAccount(accountID, managerID uuid.UUID) error {
 
 	return nil
 }
+
+func (s *Service) UploadAvatar(accountID uuid.UUID, avatarURL string) error {
+	account, err := s.accounts.FindAccountByID(accountID)
+	if err != nil {
+		return err
+	}
+
+	account.SetAvatarURL(avatarURL)
+
+	if err := s.accounts.SaveAccount(&account); err != nil {
+		return err
+	}
+
+	return nil
+}

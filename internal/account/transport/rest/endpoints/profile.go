@@ -10,16 +10,18 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func NewProfileHandler(s domain.ServiceContract, logger *logrus.Logger, jwt *security.JWTService) http.HandlerFunc {
-	return makeProfileEndpoint(s, logger, jwt)
+func NewProfileHandler(s domain.ServiceContract, logger *logrus.Logger) http.HandlerFunc {
+	return makeProfileEndpoint(s, logger)
 }
 
 type profileResponse struct {
 	Account domain.Account `json:"account"`
 }
 
-func makeProfileEndpoint(s domain.ServiceContract, logger *logrus.Logger, jwt *security.JWTService) http.HandlerFunc {
+func makeProfileEndpoint(s domain.ServiceContract, logger *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		jwt := security.NewJWTService()
+
 		token := rest.RetrieveTokenFromRequest(r)
 
 		payload, err := jwt.RetriveTokenPayload(token)

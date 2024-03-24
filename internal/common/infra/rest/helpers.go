@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/charmingruby/mvplease/internal/common/infra/security"
+	cErrors "github.com/charmingruby/mvplease/pkg/errors"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -113,5 +114,12 @@ func RetrieveTokenFromRequest(r *http.Request) string {
 
 func RetrievePayloadFromRequest(r *http.Request) (*security.Payload, error) {
 	tokenStr := RetrieveTokenFromRequest(r)
-	return security.NewJWTService().RetriveTokenPayload(tokenStr)
+
+	payload, err := security.NewJWTService().RetriveTokenPayload(tokenStr)
+
+	if err != nil {
+		return nil, cErrors.NewTokenRetrieveError(err)
+	}
+
+	return payload, nil
 }
