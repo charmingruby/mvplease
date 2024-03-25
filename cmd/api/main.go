@@ -1,8 +1,14 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/charmingruby/mvplease/config"
 	"github.com/charmingruby/mvplease/internal/account"
@@ -65,9 +71,23 @@ func main() {
 		os.Exit(1)
 	}
 	logger.Info("Server setted.")
+	go func() {
+		if err := server.Start(); !errors.Is(err, http.ErrServerClosed) {
+			logger.Errorf("Server error: %s", err.Error())
+			os.Exit(1)
+		}
+	}()
 
-	if err := server.Start(); err != nil {
-		logger.Errorf("Server error: %s", err.Error())
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM)
+	<-sc
+
+	ctx, shutdownRelease := context.WithTimeout(context.Background(), 10*time.Second)
+	defer shutdownRelease()
+
+	if err := server.Shutdown(ctx); err != nil {
+		logger.Fatalf("Server shutdown error: %v", err)
 		os.Exit(1)
 	}
+	logger.Info("Gracefully shutdown.")
 }
