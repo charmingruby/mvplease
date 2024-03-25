@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"github.com/charmingruby/mvplease/internal/account/domain"
+	"github.com/charmingruby/mvplease/internal/common/core/repository"
 	"github.com/charmingruby/mvplease/pkg/errors"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
@@ -73,12 +74,21 @@ func (r *AccountRepository) FindAccountByEmail(email string) (domain.Account, er
 }
 
 func (r *AccountRepository) FetchAccounts(page uint) ([]domain.Account, error) {
-	_, err := r.statement(fetchAccounts)
+	stmt, err := r.statement(fetchAccounts)
 	if err != nil {
 		return []domain.Account{}, err
 	}
 
-	return []domain.Account{}, nil
+	var accounts []domain.Account
+
+	offset := (page) * uint(repository.ItemsPerPage())
+	limit := repository.ItemsPerPage()
+
+	if err := stmt.Select(&accounts, limit, offset); err != nil {
+		return []domain.Account{}, err
+	}
+
+	return accounts, nil
 }
 
 func (r *AccountRepository) CreateAccount(a *domain.Account) error {

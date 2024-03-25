@@ -6,8 +6,8 @@ POST {{baseUrl}}/register
 Content-Type: application/json
 
 {
-	"name": "john doe",
-	"email": "johndoe@example.com",
+	"name": "du,,y doe",
+	"email": "du,,ydoe@example.com",
 	"password": "password123"
 }
 
@@ -21,6 +21,13 @@ Content-Type: application/json
 	"email": "johndoe@example.com",
 	"password": "password123"
 }
+
+###
+
+# @name fetch_accounts
+GET {{baseUrl}}/accounts?page=1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 ###
 

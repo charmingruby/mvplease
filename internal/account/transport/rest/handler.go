@@ -49,6 +49,9 @@ func (h *Handler) NewAccountsRouter() *mux.Router {
 	deleteAccountHandler := endpoints.NewDeleteAccountHandler(h.s, h.logger)
 	r.Handle("/{id}", h.mw.ProtectedRouteByRole("manager", deleteAccountHandler)).Methods(http.MethodDelete)
 
+	fetchAccountsHandler := endpoints.NewFetchAccountsHandler(h.s, h.logger)
+	r.Handle("", h.mw.ProtectedRouteByRole("manager", fetchAccountsHandler)).Methods(http.MethodGet)
+
 	return r
 }
 
