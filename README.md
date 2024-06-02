@@ -79,7 +79,7 @@ Body da resposta:
 
 ```
 {
-  "message": "Account created",
-  "status_code": 201
+    "message": "Account created",
+    "status_code": 201
 }
 ```
