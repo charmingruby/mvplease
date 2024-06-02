@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   postgres:
+    container_name: mvplease-db 
     image: bitnami/postgresql:latest
     ports: 
       - '5432:5432'
@@ -9,8 +10,21 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=mvplease
-    volumes:
-      - mvplease_pg_data:/bitnami/postgresql
-
-volumes:
-  mvplease_pg_data:
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+      timeout: 5s
+  app:
+    container_name: mvplease-api
+    image: mvplease-api
+    depends_on:
+      postgres:
+        condition: service_healthy 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - "3000:3000"
+    env_file:
+      - .env
