@@ -69,9 +69,9 @@ Body da requisição:
 
 ```
 {
-	"name": "dummyy doe",
-	"cpf": "24628728097",
-	"secret": "password123"
+    "name": "dummyy doe",
+    "cpf": "24628728097",
+    "secret": "password123"
 }
 ```
 
